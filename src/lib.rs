@@ -22,7 +22,9 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             commands::check_camera_permission,
             commands::request_camera_permission,
             commands::check_input_monitoring_permission,
-            commands::request_input_monitoring_permission
+            commands::request_input_monitoring_permission,
+            commands::check_system_audio_recording_permission,
+            commands::request_system_audio_recording_permission
         ])
         .build()
 }

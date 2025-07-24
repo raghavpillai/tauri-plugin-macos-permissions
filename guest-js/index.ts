@@ -24,6 +24,10 @@ export const COMMAND = {
     "plugin:macos-permissions|check_input_monitoring_permission",
   REQUEST_INPUT_MONITORING_PERMISSION:
     "plugin:macos-permissions|request_input_monitoring_permission",
+  CHECK_SYSTEM_AUDIO_RECORDING_PERMISSION:
+    "plugin:macos-permissions|check_system_audio_recording_permission",
+  REQUEST_SYSTEM_AUDIO_RECORDING_PERMISSION:
+    "plugin:macos-permissions|request_system_audio_recording_permission",
 };
 
 /**
@@ -186,4 +190,42 @@ export const checkInputMonitoringPermission = () => {
  */
 export const requestInputMonitoringPermission = () => {
   return invoke(COMMAND.REQUEST_INPUT_MONITORING_PERMISSION);
+};
+
+/**
+ * Check system audio recording permission.
+ *
+ * This function attempts to access system audio objects to determine if permission has been granted.
+ * Unlike other permissions, system audio recording permission is typically granted the first time
+ * the app attempts to capture system audio.
+ *
+ * @returns `true` if system audio recording permission appears to be granted, `false` otherwise.
+ *
+ * @example
+ * import { checkSystemAudioRecordingPermission } from "tauri-plugin-macos-permissions-api";
+ *
+ * const authorized = await checkSystemAudioRecordingPermission();
+ * console.log(authorized);
+ */
+export const checkSystemAudioRecordingPermission = () => {
+  return invoke<boolean>(COMMAND.CHECK_SYSTEM_AUDIO_RECORDING_PERMISSION);
+};
+
+/**
+ * Request system audio recording permission.
+ *
+ * Note: System audio recording permission follows a different model than other permissions.
+ * There is no direct API to request permission. Instead, the system automatically prompts
+ * the user the first time the app attempts to capture system audio.
+ *
+ * This function opens System Settings to the Privacy & Security section where users can
+ * manually manage the permission.
+ *
+ * @example
+ * import { requestSystemAudioRecordingPermission } from "tauri-plugin-macos-permissions-api";
+ *
+ * await requestSystemAudioRecordingPermission();
+ */
+export const requestSystemAudioRecordingPermission = () => {
+  return invoke(COMMAND.REQUEST_SYSTEM_AUDIO_RECORDING_PERMISSION);
 };

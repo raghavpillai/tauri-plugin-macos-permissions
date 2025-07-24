@@ -16,6 +16,8 @@ Default permissions for the plugin
 - `allow-request-camera-permission`
 - `allow-check-input-monitoring-permission`
 - `allow-request-input-monitoring-permission`
+- `allow-check-system-audio-recording-permission`
+- `allow-request-system-audio-recording-permission`
 
 ## Permission Table
 
@@ -185,6 +187,32 @@ Denies the check_screen_recording_permission command without any pre-configured 
 <tr>
 <td>
 
+`macos-permissions:allow-check-system-audio-recording-permission`
+
+</td>
+<td>
+
+Enables the check_system_audio_recording_permission command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`macos-permissions:deny-check-system-audio-recording-permission`
+
+</td>
+<td>
+
+Denies the check_system_audio_recording_permission command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
 `macos-permissions:allow-request-accessibility-permission`
 
 </td>
@@ -334,6 +362,32 @@ Enables the request_screen_recording_permission command without any pre-configur
 <td>
 
 Denies the request_screen_recording_permission command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`macos-permissions:allow-request-system-audio-recording-permission`
+
+</td>
+<td>
+
+Enables the request_system_audio_recording_permission command without any pre-configured scope.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+`macos-permissions:deny-request-system-audio-recording-permission`
+
+</td>
+<td>
+
+Denies the request_system_audio_recording_permission command without any pre-configured scope.
 
 </td>
 </tr>

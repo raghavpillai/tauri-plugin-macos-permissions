@@ -43,7 +43,7 @@ pub fn run() {
 }
 ```
 
-If you need to access the microphone or camera permissions, please update `src-tauri/Info.plist`：
+If you need to access the microphone, camera, or system audio recording permissions, please update `src-tauri/Info.plist`：
 
 ```diff
 <?xml version="1.0" encoding="UTF-8"?>
@@ -55,6 +55,8 @@ If you need to access the microphone or camera permissions, please update `src-t
 +    <string>Describe why your app needs to use microphone permission</string>
 +    <key>NSCameraUsageDescription</key>
 +    <string>Describe why your app needs to use camera permissions</string>
++    <key>NSAudioCaptureUsageDescription</key>
++    <string>Describe why your app needs to capture system audio</string>
 </dict>
 </plist>
 ```
@@ -70,20 +72,22 @@ console.log(authorized); // true
 
 ## Methods
 
-| Method                             | Description                          |
-| ---------------------------------- | ------------------------------------ |
-| `checkAccessibilityPermission`     | Check accessibility permission.      |
-| `requestAccessibilityPermission`   | Request accessibility permission.    |
-| `checkFullDiskAccessPermission`    | Check full disk access permission.   |
-| `requestFullDiskAccessPermission`  | Request full disk access permission. |
-| `checkScreenRecordingPermission`   | Check screen recording permission.   |
-| `requestScreenRecordingPermission` | Request screen recording permission. |
-| `checkMicrophonePermission`        | Check microphone permission.         |
-| `requestMicrophonePermission`      | Request microphone permission.       |
-| `checkCameraPermission`            | Check camera permission.             |
-| `requestCameraPermission`          | Request camera permission.           |
-| `checkInputMonitoringPermission`   | Check input monitoring permission.   |
-| `requestInputMonitoringPermission` | Request input monitoring permission. |
+| Method                                   | Description                                |
+| ---------------------------------------- | ------------------------------------------ |
+| `checkAccessibilityPermission`           | Check accessibility permission.            |
+| `requestAccessibilityPermission`         | Request accessibility permission.          |
+| `checkFullDiskAccessPermission`          | Check full disk access permission.         |
+| `requestFullDiskAccessPermission`        | Request full disk access permission.       |
+| `checkScreenRecordingPermission`         | Check screen recording permission.         |
+| `requestScreenRecordingPermission`       | Request screen recording permission.       |
+| `checkMicrophonePermission`              | Check microphone permission.               |
+| `requestMicrophonePermission`            | Request microphone permission.             |
+| `checkCameraPermission`                  | Check camera permission.                   |
+| `requestCameraPermission`                | Request camera permission.                 |
+| `checkInputMonitoringPermission`         | Check input monitoring permission.         |
+| `requestInputMonitoringPermission`       | Request input monitoring permission.       |
+| `checkSystemAudioRecordingPermission`    | Check system audio recording permission by testing system audio access. |
+| `requestSystemAudioRecordingPermission`  | Open System Settings for system audio recording permission. |
 
 ## Example
 

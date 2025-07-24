@@ -13,6 +13,8 @@ import {
   requestCameraPermission,
   checkInputMonitoringPermission,
   requestInputMonitoringPermission,
+  checkSystemAudioRecordingPermission,
+  requestSystemAudioRecordingPermission,
 } from "tauri-plugin-macos-permissions-api";
 
 const App = () => {
@@ -23,6 +25,7 @@ const App = () => {
     microphonePermission: false,
     cameraPermission: false,
     inputMonitoringPermission: false,
+    systemAudioRecordingPermission: false,
   });
 
   useMount(async () => {
@@ -32,6 +35,7 @@ const App = () => {
     state.microphonePermission = await checkMicrophonePermission();
     state.cameraPermission = await checkCameraPermission();
     state.inputMonitoringPermission = await checkInputMonitoringPermission();
+    state.systemAudioRecordingPermission = await checkSystemAudioRecordingPermission();
   });
 
   const data = useCreation(() => {
@@ -102,6 +106,26 @@ const App = () => {
         label: "Input Monitoring Permission",
         value: state.inputMonitoringPermission,
         check: requestInputMonitoringPermission,
+      },
+      {
+        label: "System Audio Recording Permission",
+        value: state.systemAudioRecordingPermission,
+        check: async () => {
+          // System audio recording permission works differently - it's granted on first use
+          // This opens System Settings > Privacy & Security > Screen Recording where system audio permissions are managed
+          await requestSystemAudioRecordingPermission();
+
+          // Check permission after opening settings
+          const check = async () => {
+            state.systemAudioRecordingPermission = await checkSystemAudioRecordingPermission();
+
+            if (state.systemAudioRecordingPermission) return;
+
+            setTimeout(check, 1000);
+          };
+
+          check();
+        },
       },
     ];
   }, [{ ...state }]);

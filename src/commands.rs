@@ -24,6 +24,67 @@ extern "C" {
     fn IOHIDCheckAccess(request: u32) -> u32;
 }
 
+#[cfg(target_os = "macos")]
+#[link(name = "CoreAudio", kind = "framework")]
+extern "C" {
+    fn AudioObjectGetPropertyData(
+        inObjectID: u32,
+        inAddress: *const AudioObjectPropertyAddress,
+        inQualifierDataSize: u32,
+        inQualifierData: *const std::ffi::c_void,
+        ioDataSize: *mut u32,
+        outData: *mut std::ffi::c_void,
+    ) -> i32;
+}
+
+#[cfg(target_os = "macos")]
+#[repr(C)]
+struct AudioObjectPropertyAddress {
+    mSelector: u32,
+    mScope: u32,
+    mElement: u32,
+}
+
+#[cfg(target_os = "macos")]
+const kAudioHardwarePropertyTranslatePIDToProcessObject: u32 = 0x70696432; // 'pid2'
+#[cfg(target_os = "macos")]
+const kAudioObjectSystemObject: u32 = 1;
+#[cfg(target_os = "macos")]
+const kAudioObjectPropertyScopeGlobal: u32 = 0x676c6f62; // 'glob'
+#[cfg(target_os = "macos")]
+const kAudioObjectPropertyElementMain: u32 = 0;
+
+#[cfg(target_os = "macos")]
+fn test_system_audio_permission() -> bool {
+    unsafe {
+        // Try to get the system process object (PID 0 represents system audio)
+        let system_pid: u32 = 0;
+        let mut process_object: u32 = 0;
+        let mut data_size = std::mem::size_of::<u32>() as u32;
+        
+        let address = AudioObjectPropertyAddress {
+            mSelector: kAudioHardwarePropertyTranslatePIDToProcessObject,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain,
+        };
+        
+        let result = AudioObjectGetPropertyData(
+            kAudioObjectSystemObject,
+            &address,
+            std::mem::size_of::<u32>() as u32,
+            &system_pid as *const u32 as *const std::ffi::c_void,
+            &mut data_size,
+            &mut process_object as *mut u32 as *mut std::ffi::c_void,
+        );
+        
+        // If we can successfully get the system process object, we likely have permission
+        // This is a minimal test that doesn't actually create a tap, just checks if we can access system audio objects
+        result == 0 && process_object != 0
+    }
+}
+
+
+
 /// Check accessibility permission.
 ///
 /// # Returns
@@ -304,6 +365,68 @@ pub async fn request_input_monitoring_permission() -> Result<(), String> {
     {
         Command::new("open")
             .arg("x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent")
+            .output()
+            .map_err(|error| error.to_string())?;
+    }
+
+    Ok(())
+}
+
+/// Check system audio recording permission.
+///
+/// This function attempts to access system audio objects to determine if permission has been granted.
+/// Unlike other permissions, system audio recording permission is typically granted the first time
+/// the app attempts to capture system audio.
+///
+/// # Returns
+/// - `bool`: `true` if system audio recording permission appears to be granted, `false` otherwise.
+///
+/// # Example
+/// ```
+/// use tauri_plugin_macos_permissions::check_system_audio_recording_permission;
+///
+/// let authorized = check_system_audio_recording_permission().await;
+/// println!("Authorized: {}", authorized);
+/// ```
+#[command]
+pub async fn check_system_audio_recording_permission() -> bool {
+    #[cfg(target_os = "macos")]
+    {
+        test_system_audio_permission()
+    }
+    
+    #[cfg(not(target_os = "macos"))]
+    true
+}
+
+/// Request system audio recording permission.
+///
+/// Note: System audio recording permission follows a different model than other permissions.
+/// There is no direct API to request permission. Instead, the system automatically prompts
+/// the user the first time the app attempts to capture system audio.
+///
+/// This function will open System Settings to the Privacy & Security > Microphone section
+/// where users can manually grant the permission, or inform them about the automatic process.
+///
+/// # Example
+/// ```
+/// use tauri_plugin_macos_permissions::request_system_audio_recording_permission;
+///
+/// request_system_audio_recording_permission().await;
+/// ```
+#[command]
+pub async fn request_system_audio_recording_permission() -> Result<(), String> {
+    #[cfg(target_os = "macos")]
+    {
+        // For system audio recording, we can't directly request the permission.
+        // The best we can do is direct the user to System Settings where they
+        // can see the permission controls, or inform them that permission will
+        // be requested when they first use the audio capture feature.
+        
+        // Open System Settings to Privacy & Security > Screen Recording
+        // Note: System audio recording permissions are managed in the same section as screen recording
+        Command::new("open")
+            .arg("x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture")
             .output()
             .map_err(|error| error.to_string())?;
     }

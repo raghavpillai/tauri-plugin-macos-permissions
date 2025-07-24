@@ -367,6 +367,18 @@
           "markdownDescription": "Denies the check_screen_recording_permission command without any pre-configured scope."
         },
         {
+          "description": "Enables the check_system_audio_recording_permission command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-check-system-audio-recording-permission",
+          "markdownDescription": "Enables the check_system_audio_recording_permission command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the check_system_audio_recording_permission command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-check-system-audio-recording-permission",
+          "markdownDescription": "Denies the check_system_audio_recording_permission command without any pre-configured scope."
+        },
+        {
           "description": "Enables the request_accessibility_permission command without any pre-configured scope.",
           "type": "string",
           "const": "allow-request-accessibility-permission",
@@ -439,10 +451,22 @@
           "markdownDescription": "Denies the request_screen_recording_permission command without any pre-configured scope."
         },
         {
-          "description": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-check-accessibility-permission`\n- `allow-request-accessibility-permission`\n- `allow-check-full-disk-access-permission`\n- `allow-request-full-disk-access-permission`\n- `allow-check-screen-recording-permission`\n- `allow-request-screen-recording-permission`\n- `allow-check-microphone-permission`\n- `allow-request-microphone-permission`\n- `allow-check-camera-permission`\n- `allow-request-camera-permission`\n- `allow-check-input-monitoring-permission`\n- `allow-request-input-monitoring-permission`",
+          "description": "Enables the request_system_audio_recording_permission command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-request-system-audio-recording-permission",
+          "markdownDescription": "Enables the request_system_audio_recording_permission command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the request_system_audio_recording_permission command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-request-system-audio-recording-permission",
+          "markdownDescription": "Denies the request_system_audio_recording_permission command without any pre-configured scope."
+        },
+        {
+          "description": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-check-accessibility-permission`\n- `allow-request-accessibility-permission`\n- `allow-check-full-disk-access-permission`\n- `allow-request-full-disk-access-permission`\n- `allow-check-screen-recording-permission`\n- `allow-request-screen-recording-permission`\n- `allow-check-microphone-permission`\n- `allow-request-microphone-permission`\n- `allow-check-camera-permission`\n- `allow-request-camera-permission`\n- `allow-check-input-monitoring-permission`\n- `allow-request-input-monitoring-permission`\n- `allow-check-system-audio-recording-permission`\n- `allow-request-system-audio-recording-permission`",
           "type": "string",
           "const": "default",
-          "markdownDescription": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-check-accessibility-permission`\n- `allow-request-accessibility-permission`\n- `allow-check-full-disk-access-permission`\n- `allow-request-full-disk-access-permission`\n- `allow-check-screen-recording-permission`\n- `allow-request-screen-recording-permission`\n- `allow-check-microphone-permission`\n- `allow-request-microphone-permission`\n- `allow-check-camera-permission`\n- `allow-request-camera-permission`\n- `allow-check-input-monitoring-permission`\n- `allow-request-input-monitoring-permission`"
+          "markdownDescription": "Default permissions for the plugin\n#### This default permission set includes:\n\n- `allow-check-accessibility-permission`\n- `allow-request-accessibility-permission`\n- `allow-check-full-disk-access-permission`\n- `allow-request-full-disk-access-permission`\n- `allow-check-screen-recording-permission`\n- `allow-request-screen-recording-permission`\n- `allow-check-microphone-permission`\n- `allow-request-microphone-permission`\n- `allow-check-camera-permission`\n- `allow-request-camera-permission`\n- `allow-check-input-monitoring-permission`\n- `allow-request-input-monitoring-permission`\n- `allow-check-system-audio-recording-permission`\n- `allow-request-system-audio-recording-permission`"
         }
       ]
     }
